@@ -10,47 +10,12 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="style.css" />
-    <title>Password Generator</title>
-    <script
-      type="text/javascript"
-      src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=zbgo6fAXhAevCAbPI0FgJeSFA_j-QGDc7MoulZNRWVUusKtr1DtCkLpudibFElT7BJw5XdEmO0LVkwniKlyEkccR1hocLmgq5f3XZ1lOono"
-      charset="UTF-8"
-    ></script>
+    <title>Notes App</title>
   </head>
   <body>
-    <div class="container">
-      <h2>Password Generator</h2>
-      <div class="result-container">
-        <span id="result"></span>
-        <button class="btn" id="clipboard">
-          <i class="far fa-clipboard"></i>
-        </button>
-      </div>
-      <div class="settings">
-        <div class="setting">
-          <label>Password Length</label>
-          <input type="number" id="length" min="4" max="20" value="20" />
-        </div>
-        <div class="setting">
-          <label>Include uppercase letters</label>
-          <input type="checkbox" id="uppercase" checked />
-        </div>
-        <div class="setting">
-          <label>Include lowercase letters</label>
-          <input type="checkbox" id="lowercase" checked />
-        </div>
-        <div class="setting">
-          <label>Include numbers</label>
-          <input type="checkbox" id="numbers" checked />
-        </div>
-        <div class="setting">
-          <label>Include symbols</label>
-          <input type="checkbox" id="symbols" checked />
-        </div>
-      </div>
+    <button class="add" id="add"><i class="fas fa-plus"></i> Add note</button>
 
-      <button class="btn btn-large" id="generate">Generate Password</button>
-    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/1.2.2/marked.min.js"></script>
     <script src="script.js"></script>
   </body>
 </html>

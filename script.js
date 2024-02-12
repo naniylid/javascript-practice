@@ -1,81 +1,63 @@
-const resultEl = document.getElementById('result');
-const lengthEl = document.getElementById('length');
-const uppercaseEl = document.getElementById('uppercase');
-const lowercaseEl = document.getElementById('lowercase');
-const numbersEl = document.getElementById('numbers');
-const symbolsEl = document.getElementById('symbols');
-const generateEl = document.getElementById('generate');
-const clipboardEl = document.getElementById('clipboard');
+const addBtn = document.getElementById('add');
 
-const randomFunc = {
-  lower: getRandomLower,
-  upper: getRandomUpper,
-  number: getRandomNumber,
-  symbol: getRandomSymbol,
-};
+const notes = JSON.parse(localStorage.getItem('notes'));
 
-clipboardEl.addEventListener('click', () => {
-  const textarea = document.createElement('textarea');
-  const password = resultEl.innerText;
-
-  if (!password) {
-    return;
-  }
-
-  textarea.value = password;
-  document.body.appendChild(textarea);
-  textarea.select();
-  document.execCommand('copy');
-  textarea.remove();
-  alert('Password copied to clipboard!');
-});
-
-generateEl.addEventListener('click', () => {
-  const length = +lengthEl.value;
-  const hasLower = lowercaseEl.checked;
-  const hasUpper = uppercaseEl.checked;
-  const hasNumber = numbersEl.checked;
-  const hasSymbol = symbolsEl.checked;
-
-  resultEl.innerText = generatePassword(hasLower, hasUpper, hasNumber, hasSymbol, length);
-});
-
-function generatePassword(lower, upper, number, symbol, length) {
-  let generatedPassword = '';
-  const typesCount = lower + upper + number + symbol;
-  const typesArr = [{ lower }, { upper }, { number }, { symbol }].filter(
-    (item) => Object.values(item)[0],
-  );
-
-  if (typesCount === 0) {
-    return '';
-  }
-
-  for (let i = 0; i < length; i += typesCount) {
-    typesArr.forEach((type) => {
-      const funcName = Object.keys(type)[0];
-      generatedPassword += randomFunc[funcName]();
-    });
-  }
-
-  const finalPassword = generatedPassword.slice(0, length);
-
-  return finalPassword;
+if (notes) {
+  notes.forEach((note) => addNewNote(note));
 }
 
-function getRandomLower() {
-  return String.fromCharCode(Math.floor(Math.random() * 26) + 97);
+addBtn.addEventListener('click', () => addNewNote());
+
+function addNewNote(text = '') {
+  const note = document.createElement('div');
+  note.classList.add('note');
+
+  note.innerHTML = `
+    <div class="tools">
+        <button class="edit"><i class="fas fa-edit"></i></button>
+        <button class="delete"><i class="fas fa-trash-alt"></i></button>
+    </div>
+
+    <div class="main ${text ? '' : 'hidden'}"></div>
+    <textarea class="${text ? 'hidden' : ''}"></textarea>
+    `;
+
+  const editBtn = note.querySelector('.edit');
+  const deleteBtn = note.querySelector('.delete');
+  const main = note.querySelector('.main');
+  const textArea = note.querySelector('textarea');
+
+  textArea.value = text;
+  main.innerHTML = marked(text);
+
+  deleteBtn.addEventListener('click', () => {
+    note.remove();
+
+    updateLS();
+  });
+
+  editBtn.addEventListener('click', () => {
+    main.classList.toggle('hidden');
+    textArea.classList.toggle('hidden');
+  });
+
+  textArea.addEventListener('input', (e) => {
+    const { value } = e.target;
+
+    main.innerHTML = marked(value);
+
+    updateLS();
+  });
+
+  document.body.appendChild(note);
 }
 
-function getRandomUpper() {
-  return String.fromCharCode(Math.floor(Math.random() * 26) + 65);
-}
+function updateLS() {
+  const notesText = document.querySelectorAll('textarea');
 
-function getRandomNumber() {
-  return String.fromCharCode(Math.floor(Math.random() * 10) + 48);
-}
+  const notes = [];
 
-function getRandomSymbol() {
-  const symbols = '!@#$%^&*(){}[]=<>/,.';
-  return symbols[Math.floor(Math.random() * symbols.length)];
+  notesText.forEach((note) => notes.push(note.value));
+
+  localStorage.setItem('notes', JSON.stringify(notes));
 }
