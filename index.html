@@ -5,51 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
-      integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog=="
+      href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.8.11/tailwind.min.css"
+      integrity="sha512-KO1h5ynYuqsFuEicc7DmOQc+S9m2xiCKYlC3zcZCSEw0RGDsxcMnppRaMZnb0DdzTDPaW22ID/gAGCZ9i+RT/w=="
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="style.css" />
-    <title>Password Generator</title>
-    <script
-      type="text/javascript"
-      src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=zbgo6fAXhAevCAbPI0FgJeSFA_j-QGDc7MoulZNRWVUusKtr1DtCkLpudibFElT7BJw5XdEmO0LVkwniKlyEkccR1hocLmgq5f3XZ1lOono"
-      charset="UTF-8"
-    ></script>
+    <title>Password Strength Backround</title>
   </head>
   <body>
-    <div class="container">
-      <h2>Password Generator</h2>
-      <div class="result-container">
-        <span id="result"></span>
-        <button class="btn" id="clipboard">
-          <i class="far fa-clipboard"></i>
-        </button>
-      </div>
-      <div class="settings">
-        <div class="setting">
-          <label>Password Length</label>
-          <input type="number" id="length" min="4" max="20" value="20" />
-        </div>
-        <div class="setting">
-          <label>Include uppercase letters</label>
-          <input type="checkbox" id="uppercase" checked />
-        </div>
-        <div class="setting">
-          <label>Include lowercase letters</label>
-          <input type="checkbox" id="lowercase" checked />
-        </div>
-        <div class="setting">
-          <label>Include numbers</label>
-          <input type="checkbox" id="numbers" checked />
-        </div>
-        <div class="setting">
-          <label>Include symbols</label>
-          <input type="checkbox" id="symbols" checked />
-        </div>
+    <div class="background" id="background"></div>
+    <div class="bg-white rounded p-10 text-center shadow-md">
+      <h1 class="text-3xl">Image Password Strength</h1>
+      <p class="text-sm text-gray-700">Change the password to see the effect</p>
+      <div class="my-4 text-left">
+        <label for="email" class="text-gray-900">Email:</label>
+        <input
+          type="text"
+          class="border block w-full p-2 mt-2 rounded"
+          id="email"
+          placeholder="Enter Email"
+        />
       </div>
 
-      <button class="btn btn-large" id="generate">Generate Password</button>
+      <div class="my-4 text-left">
+        <label for="email" class="text-gray-900">Password:</label>
+        <input
+          type="password"
+          class="border block w-full p-2 mt-2 rounded"
+          id="password"
+          placeholder="Enter Password"
+        />
+      </div>
+
+      <button class="bg-black text-white py-2 mt-4 inline-block w-full rounded" type="submit">
+        Submit
+      </button>
     </div>
     <script src="script.js"></script>
   </body>
