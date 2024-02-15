@@ -1,9 +1,17 @@
-const password = document.getElementById('password');
-const background = document.getElementById('background');
+const boxesContainer = document.getElementById('boxes');
+const btn = document.getElementById('btn');
 
-password.addEventListener('input', (e) => {
-  const input = e.target.value;
-  const length = input.length;
-  const blurValue = 20 - length * 2;
-  background.style.filter = `blur(${blurValue}px)`;
-});
+btn.addEventListener('click', () => boxesContainer.classList.toggle('big'));
+
+function createBoxes() {
+  for (let i = 0; i < 4; i++) {
+    for (let j = 0; j < 4; j++) {
+      const box = document.createElement('div');
+      box.classList.add('box');
+      box.style.backgroundPosition = `${-j * 125}px ${-i * 125}px`;
+      boxesContainer.appendChild(box);
+    }
+  }
+}
+
+createBoxes();
