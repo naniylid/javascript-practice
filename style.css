@@ -1,72 +1,150 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap');
 
 * {
   box-sizing: border-box;
 }
 
 body {
-  background-color: #f5f5f5;
-  color: #444;
-  font-family: 'Poppins', sans-serif;
+  background-color: #516dff;
+  color: #fff;
+  font-family: 'Press Start 2P', sans-serif;
+  height: 100vh;
+  overflow: hidden;
+  margin: 0;
+  text-align: center;
+}
+
+a {
+  color: #fff;
+}
+
+h1 {
+  line-height: 1.4;
+}
+
+.btn {
+  border: 0;
+  background-color: #fff;
+  color: #516dff;
+  padding: 15px 20px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.btn:focus {
+  outline: 0;
+}
+
+.screen {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100vh;
-  margin: 0;
+  width: 100vw;
+  transition: margin 0.5s ease-out;
 }
 
-h1 {
-  color: rgb(179, 131, 226);
-  font-size: 10rem;
-  text-align: center;
-  opacity: 0.4;
+.screen.up {
+  margin-top: -100vh;
 }
 
-form {
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  max-width: 100%;
-  width: 400px;
-}
-
-.input {
-  border: none;
-  color: #444;
-  font-size: 2rem;
-  padding: 1rem 2rem;
-  display: block;
-  width: 100%;
-}
-
-.input::placeholder {
-  color: #d5d5d5;
-}
-
-.input:focus {
-  outline-color: rgb(179, 131, 226);
-}
-
-.todos {
-  background-color: #fff;
-  padding: 0;
-  margin: 0;
+.insects-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   list-style-type: none;
+  padding: 0;
 }
 
-.todos li {
-  border-top: 1px solid #e5e5e5;
+.insects-list li {
+  margin: 10px;
+}
+
+.choose-insect-btn {
+  background-color: transparent;
+  border: 2px solid #fff;
+  color: #fff;
   cursor: pointer;
-  font-size: 1.5rem;
-  padding: 1rem 2rem;
+  font-family: inherit;
+  width: 150px;
+  height: 150px;
 }
 
-.todos li.completed {
-  color: #b6b6b6;
-  text-decoration: line-through;
+.choose-insect-btn:hover {
+  background-color: #fff;
+  color: #516dff;
 }
 
-small {
-  color: #b5b5b5;
-  margin-top: 3rem;
+.choose-insect-btn:active {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+.choose-insect-btn img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}
+
+.game-container {
+  position: relative;
+}
+
+.time,
+.score {
+  position: absolute;
+  top: 20px;
+}
+
+.time {
+  left: 20px;
+}
+
+.score {
+  right: 20px;
+}
+
+.message {
+  line-height: 1.7;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  padding: 20px;
+  z-index: 100;
   text-align: center;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -150%);
+  transition: transform 0.4s ease-in;
+}
+
+.message.visible {
+  transform: translate(-50%, 150%);
+  opacity: 1;
+}
+
+.insect {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  transform: translate(-50%, -50%) scale(1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.insect.caught {
+  transform: translate(-50%, -50%) scale(0);
+}
+
+.insect img {
+  width: 100px;
+  height: 100px;
 }
