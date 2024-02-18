@@ -1,81 +1,80 @@
-const resultEl = document.getElementById('result');
-const lengthEl = document.getElementById('length');
-const uppercaseEl = document.getElementById('uppercase');
-const lowercaseEl = document.getElementById('lowercase');
-const numbersEl = document.getElementById('numbers');
-const symbolsEl = document.getElementById('symbols');
-const generateEl = document.getElementById('generate');
-const clipboardEl = document.getElementById('clipboard');
+const screens = document.querySelectorAll('.screen');
+const choose_insect_btns = document.querySelectorAll('.choose-insect-btn');
+const start_btn = document.getElementById('start-btn');
+const game_container = document.getElementById('game-container');
+const timeEl = document.getElementById('time');
+const scoreEl = document.getElementById('score');
+const message = document.getElementById('message');
+let seconds = 0;
+let score = 0;
+let selected_insect = {};
 
-const randomFunc = {
-  lower: getRandomLower,
-  upper: getRandomUpper,
-  number: getRandomNumber,
-  symbol: getRandomSymbol,
-};
+start_btn.addEventListener('click', () => screens[0].classList.add('up'));
 
-clipboardEl.addEventListener('click', () => {
-  const textarea = document.createElement('textarea');
-  const password = resultEl.innerText;
-
-  if (!password) {
-    return;
-  }
-
-  textarea.value = password;
-  document.body.appendChild(textarea);
-  textarea.select();
-  document.execCommand('copy');
-  textarea.remove();
-  alert('Password copied to clipboard!');
+choose_insect_btns.forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const img = btn.querySelector('img');
+    const src = img.getAttribute('src');
+    const alt = img.getAttribute('alt');
+    selected_insect = { src, alt };
+    screens[1].classList.add('up');
+    setTimeout(createInsect, 1000);
+    startGame();
+  });
 });
 
-generateEl.addEventListener('click', () => {
-  const length = +lengthEl.value;
-  const hasLower = lowercaseEl.checked;
-  const hasUpper = uppercaseEl.checked;
-  const hasNumber = numbersEl.checked;
-  const hasSymbol = symbolsEl.checked;
+function startGame() {
+  setInterval(increaseTime, 1000);
+}
 
-  resultEl.innerText = generatePassword(hasLower, hasUpper, hasNumber, hasSymbol, length);
-});
+function increaseTime() {
+  let m = Math.floor(seconds / 60);
+  let s = seconds % 60;
+  m = m < 10 ? `0${m}` : m;
+  s = s < 10 ? `0${s}` : s;
+  timeEl.innerHTML = `Time: ${m}:${s}`;
+  seconds++;
+}
 
-function generatePassword(lower, upper, number, symbol, length) {
-  let generatedPassword = '';
-  const typesCount = lower + upper + number + symbol;
-  const typesArr = [{ lower }, { upper }, { number }, { symbol }].filter(
-    (item) => Object.values(item)[0],
-  );
+function createInsect() {
+  const insect = document.createElement('div');
+  insect.classList.add('insect');
+  const { x, y } = getRandomLocation();
+  insect.style.top = `${y}px`;
+  insect.style.left = `${x}px`;
+  insect.innerHTML = `<img src="${selected_insect.src}" alt="${
+    selected_insect.alt
+  }" style="transform: rotate(${Math.random() * 360}deg)" />`;
 
-  if (typesCount === 0) {
-    return '';
+  insect.addEventListener('click', catchInsect);
+
+  game_container.appendChild(insect);
+}
+
+function getRandomLocation() {
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+  const x = Math.random() * (width - 200) + 100;
+  const y = Math.random() * (height - 200) + 100;
+  return { x, y };
+}
+
+function catchInsect() {
+  increaseScore();
+  this.classList.add('caught');
+  setTimeout(() => this.remove(), 2000);
+  addInsects();
+}
+
+function addInsects() {
+  setTimeout(createInsect, 1000);
+  setTimeout(createInsect, 1500);
+}
+
+function increaseScore() {
+  score++;
+  if (score > 19) {
+    message.classList.add('visible');
   }
-
-  for (let i = 0; i < length; i += typesCount) {
-    typesArr.forEach((type) => {
-      const funcName = Object.keys(type)[0];
-      generatedPassword += randomFunc[funcName]();
-    });
-  }
-
-  const finalPassword = generatedPassword.slice(0, length);
-
-  return finalPassword;
-}
-
-function getRandomLower() {
-  return String.fromCharCode(Math.floor(Math.random() * 26) + 97);
-}
-
-function getRandomUpper() {
-  return String.fromCharCode(Math.floor(Math.random() * 26) + 65);
-}
-
-function getRandomNumber() {
-  return String.fromCharCode(Math.floor(Math.random() * 10) + 48);
-}
-
-function getRandomSymbol() {
-  const symbols = '!@#$%^&*(){}[]=<>/,.';
-  return symbols[Math.floor(Math.random() * symbols.length)];
+  scoreEl.innerHTML = `Score: ${score}`;
 }
