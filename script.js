@@ -1,80 +1,58 @@
-const screens = document.querySelectorAll('.screen');
-const choose_insect_btns = document.querySelectorAll('.choose-insect-btn');
-const start_btn = document.getElementById('start-btn');
-const game_container = document.getElementById('game-container');
-const timeEl = document.getElementById('time');
-const scoreEl = document.getElementById('score');
-const message = document.getElementById('message');
-let seconds = 0;
-let score = 0;
-let selected_insect = {};
+const textatea = document.querySelector('textarea'),
+  voiceList = document.querySelector('select'),
+  speechBtn = document.querySelector('button');
 
-start_btn.addEventListener('click', () => screens[0].classList.add('up'));
+let synth = speechSynthesis,
+  isSpeaking = true;
 
-choose_insect_btns.forEach((btn) => {
-  btn.addEventListener('click', () => {
-    const img = btn.querySelector('img');
-    const src = img.getAttribute('src');
-    const alt = img.getAttribute('alt');
-    selected_insect = { src, alt };
-    screens[1].classList.add('up');
-    setTimeout(createInsect, 1000);
-    startGame();
-  });
-});
+voices();
 
-function startGame() {
-  setInterval(increaseTime, 1000);
-}
+function voices() {
+  for (let voice of synth.getVoices()) {
+    let selected = voice.name === 'Google US English' ? 'selected' : '';
+    let option = `<option value="${voice.name}" ${selected}>${voice.name} (${voice.lang})</option>`;
 
-function increaseTime() {
-  let m = Math.floor(seconds / 60);
-  let s = seconds % 60;
-  m = m < 10 ? `0${m}` : m;
-  s = s < 10 ? `0${s}` : s;
-  timeEl.innerHTML = `Time: ${m}:${s}`;
-  seconds++;
-}
-
-function createInsect() {
-  const insect = document.createElement('div');
-  insect.classList.add('insect');
-  const { x, y } = getRandomLocation();
-  insect.style.top = `${y}px`;
-  insect.style.left = `${x}px`;
-  insect.innerHTML = `<img src="${selected_insect.src}" alt="${
-    selected_insect.alt
-  }" style="transform: rotate(${Math.random() * 360}deg)" />`;
-
-  insect.addEventListener('click', catchInsect);
-
-  game_container.appendChild(insect);
-}
-
-function getRandomLocation() {
-  const width = window.innerWidth;
-  const height = window.innerHeight;
-  const x = Math.random() * (width - 200) + 100;
-  const y = Math.random() * (height - 200) + 100;
-  return { x, y };
-}
-
-function catchInsect() {
-  increaseScore();
-  this.classList.add('caught');
-  setTimeout(() => this.remove(), 2000);
-  addInsects();
-}
-
-function addInsects() {
-  setTimeout(createInsect, 1000);
-  setTimeout(createInsect, 1500);
-}
-
-function increaseScore() {
-  score++;
-  if (score > 19) {
-    message.classList.add('visible');
+    voiceList.insertAdjacentHTML('beforeend', option);
   }
-  scoreEl.innerHTML = `Score: ${score}`;
 }
+
+synth.addEventListener('voiceschanged', voices);
+
+function textToSpeech(text) {
+  let utterance = new SpeechSynthesisUtterance(text);
+  for (let voice of synth.getVoices()) {
+    if (voice.name === voiceList.value) {
+      utterance.voice = voice;
+    }
+  }
+  synth.speak(utterance);
+}
+
+speechBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+  if (textatea.value !== '') {
+    if (!synth.speaking) {
+      textToSpeech(textatea.value);
+    }
+    if (textatea.value.length > 80) {
+      setInterval(() => {
+        if (!synth.speaking && !isSpeaking) {
+          isSpeaking = true;
+          speechBtn.innerText = 'Convert To Speech';
+        } else {
+        }
+      }, 500);
+      if (isSpeaking) {
+        synth.resume();
+        isSpeaking = false;
+        speechBtn.innerText = 'Pause Speech';
+      } else {
+        synth.pause();
+        isSpeaking = true;
+        speechBtn.innerText = 'Resume Speech';
+      }
+    } else {
+      speechBtn.innerText = 'Convert To Speech';
+    }
+  }
+});
