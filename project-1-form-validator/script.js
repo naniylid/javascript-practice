@@ -25,6 +25,7 @@ form.addEventListener('submit', function (e) {
   checkLength(password, 6, 25);
   isValidEmail(email);
   checkPasswordsMatch(password, password2);
+
   if (!form.querySelector('.error')) {
     console.log('Username:', username.value);
     console.log('Email:', email.value);
