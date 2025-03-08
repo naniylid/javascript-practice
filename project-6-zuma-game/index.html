@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <title>Zuma game</title>
+    <link rel="stylesheet" href="./css/style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="shadow"></div>
+
+    <div class="score">
+      <div class="title">SCORE</div>
+      <div id="score" class="num">0</div>
+    </div>
+    <div class="mobile-control mobile-show">
+      <div id="stop-btn" class="stop"></div>
+      <div class="left">
+        <div id="switch-btn" class="btn switch">½</div>
+        <div id="shoot-btn" class="btn shoot">♂</div>
+      </div>
+      <div class="right">
+        <div id="move-btn" class="btn move">
+          <div class="btn move-control"></div>
+        </div>
+      </div>
+    </div>
+    <div class="popup-container">
+      <div id="start-popup" class="popup active">
+        <div class="title">HELLO !</div>
+        <div class="info">
+          <ul class="mobile-hode">
+            <li>LEFT CLICK TO SHOOT MARBLE</li>
+            <li>PRESS "SPACE" TO SWITCH THE MARBLE COLOR</li>
+            <li>PRESS "ESC" TO STOP</li>
+          </ul>
+          <ul class="mobile-show">
+            <li>CLICK ♂ TO SHOOT MARBLE</li>
+            <li>CLICK ½ TO SWITCH THE MARBLE COLOR</li>
+            <li>CLICK || TO STOP</li>
+          </ul>
+        </div>
+        <div class="button-container">
+          <div id="init-btn" class="button">START</div>
+        </div>
+      </div>
+      <div id="stop-popup" class="popup">
+        <div class="title">ZZZ..Z</div>
+        <div class="button-container">
+          <div id="start-btn" class="button">START</div>
+          <div id="reset-btn" class="button button-2">RESTART</div>
+        </div>
+      </div>
+      <div id="final-popup" class="popup">
+        <div class="title">HELLO !</div>
+        <div class="info">YOU GOT <span id="final-score" class="num"></span> SCORES !</div>
+        <div class="button-container">
+          <div id="restart-btn" class="button">RESTART</div>
+        </div>
+      </div>
+      <div class="mask"></div>
+    </div>
+    <script type="module" defer src="js/script.js"></script>
+  </body>
+</html>
